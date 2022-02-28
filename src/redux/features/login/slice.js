@@ -8,7 +8,7 @@ const initialState = {
   error: null,
 }
 
-export function fetchToken(email, password) {
+export function fetchToken(userInput) {
   // return a thunk
   return async (dispatch, getState) => {
     const status = selectLogin(getState()).status
@@ -23,8 +23,8 @@ export function fetchToken(email, password) {
       const response = await axios.post(
         'http://localhost:3001/api/v1/user/login',
         {
-          email,
-          password,
+          email: userInput.email,
+          password: userInput.password,
         }
       )
 

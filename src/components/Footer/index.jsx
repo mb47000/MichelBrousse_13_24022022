@@ -1,5 +1,11 @@
+import { FooterContainer } from './style'
+
 const Footer = () => {
-  return <footer>Footer</footer>
+  return (
+    <FooterContainer>
+      <p>Copyright 2021 Argent Bank</p>
+    </FooterContainer>
+  )
 }
 
 export default Footer
