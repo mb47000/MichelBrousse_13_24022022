@@ -1,10 +1,16 @@
-import { useDispatch } from 'react-redux'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Navigate } from 'react-router'
 import loginActions from '../../redux/features/login/actions'
 import userActions from '../../redux/features/user/actions'
+import { LoginContainer, Form, ErrorMsg } from './style'
+import { selectLogin, selectUser } from '../../redux/selectors'
+import Loader from '../../components/Loader'
 
 const Login = () => {
   const dispatch = useDispatch()
+  const login = useSelector(selectLogin)
+  const user = useSelector(selectUser)
 
   const [userInputs, setUserInputs] = useState({
     email: '',
@@ -26,22 +32,54 @@ const Login = () => {
     dispatch(userActions.fetchProfile())
   }
 
+  if (
+    login.status === 'resolved' &&
+    login.token &&
+    user.status === 'resolved' &&
+    user.profile
+  )
+    return <Navigate to="/profile" />
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="email">E-mail</label>
-        <input type="email" id="email" onChange={handleChange} required />
-      </div>
+    <LoginContainer>
+      <Form onSubmit={handleSubmit}>
+        <i className="fa fa-user-circle"></i>
 
-      <div>
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" onChange={handleChange} required />
-      </div>
+        <h2>Sign In</h2>
 
-      <button type="submit" text="Sign In">
-        Connect
-      </button>
-    </form>
+        <div>
+          <label htmlFor="email">E-mail</label>
+          <input type="email" id="email" onChange={handleChange} required />
+        </div>
+
+        <div>
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <span>
+          <input type="checkbox" id="remember-me" />
+          <label htmlFor="remember-me">Remember me</label>
+        </span>
+
+        <button type="submit" text="Sign In">
+          Sign In
+        </button>
+        {(login.status === 'rejected' || user.status === 'rejected') && (
+          <ErrorMsg>Erreur lors de la tentative de connexion</ErrorMsg>
+        )}
+
+        {(login.status === 'updating' ||
+          user.status === 'updating' ||
+          login.status === 'pending' ||
+          user.status === 'pending') && <Loader />}
+      </Form>
+    </LoginContainer>
   )
 }
 

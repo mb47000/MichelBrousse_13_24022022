@@ -30,7 +30,7 @@ export function fetchToken(userInput) {
 
       dispatch(actions.resolved(response.data.body))
     } catch (error) {
-      dispatch(actions.rejected(error))
+      dispatch(actions.rejected(error.message))
     }
   }
 }

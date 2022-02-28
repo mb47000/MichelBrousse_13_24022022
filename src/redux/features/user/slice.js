@@ -71,7 +71,7 @@ export function updateProfile(firstName, lastName) {
       const data = response.data
       dispatch(actions.resolved(data))
     } catch (error) {
-      dispatch(actions.rejected(error))
+      dispatch(actions.rejected(error.message))
     }
   }
 }
