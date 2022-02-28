@@ -30,6 +30,7 @@ const Header = () => {
             <img src={Logo} alt="Argent Bank Logo" />
           </LogoContainer>
         </Link>
+        <h1 className="sr-only">Argent Bank</h1>
         <NavList>
           <li>
             <i className="fa fa-user-circle"></i>
